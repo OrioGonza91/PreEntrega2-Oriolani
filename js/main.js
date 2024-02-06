@@ -63,13 +63,13 @@ function tieneUsuario() {
 
 //Registro de usuario
 function registroUsuario() {
-    let usuario = prompt("Ingrese nuevo nombre de usuario:");
-    let password = prompt("Ingrese su contraseña:")
+    let usuario = prompt("Genere nuevo nombre de usuario:");
+    let password = prompt("Genere contraseña:")
 
     while (usuario === "" && password === "") {
         alert("Debe ingresar un nombre de usuario y contraseña válidos.")
-        usuario = prompt("Ingrese nombre de usuario:")
-        password = prompt("Ingrese su contraseña:")
+        usuario = prompt("Genere nuevo nombre de usuario:")
+        password = prompt("Genere contraseña:")
     }
 
     usuariosRegistrados.push({
