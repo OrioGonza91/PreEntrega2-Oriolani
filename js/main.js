@@ -75,36 +75,10 @@ function registroUsuario() {
 }
 
 //Menu
-// function mostrarMenu() {
-//     let opcion = prompt("Elija una opción:\n1. Listar y agregar productos al carrito\n2. Buscar productos por marca\n3. Ver carrito de compras\n4. Eliminar productos del carrito\nx. Salir");
-//     while (opcion !== "x") {
-//         switch (opcion) {
-//             case "1":
-//                 agregarProductos();
-//                 break;
-//             case "2":
-//                 buscarProducto();
-//                 mostrarMenu();
-//                 break;
-//             case "3":
-//                 mostrarCarrito();
-//                 mostrarMenu();
-//                 break;
-//             case "4":
-//                 eliminarProductoDeCarrito();
-//                 mostrarMenu();
-//                 break;
-//             default:
-//                 alert("La opción elegida no es válida")
-//                 return;
-//         }
-//     } 
-    
-// }
-
 function mostrarMenu() {
-    let opcion = mostrarOpciones();
-    while (opcion !== "x") {
+    let opcion;
+    do {
+        opcion = mostrarOpciones();
         switch (opcion) {
             case "1":
                 agregarProductos();
@@ -118,12 +92,14 @@ function mostrarMenu() {
             case "4":
                 eliminarProductoDeCarrito();
                 break;
+            case "x":
+                alert("Saliendo del programa.");
+                break;
             default:
                 alert("La opción elegida no es válida");
                 break;
         }
-        opcion = mostrarOpciones();
-    }
+    } while (opcion !== "x");
 }
 
 function mostrarOpciones() {
