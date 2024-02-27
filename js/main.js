@@ -1,36 +1,28 @@
 // Inicializar variables
 let carrito = [];
-let productos = [{
-        nombre: "Casaca Deportiva 'Nike' ",
-        precio: 25000
-    },
-    {
-        nombre: "Short Deportivo 'Adidas'",
-        precio: 15000
-    },
-    {
-        nombre: "Botines Adidas 'Copa'",
-        precio: 50000
-    }
-];
+let productos = [];
 
-// Agregar productos al carrito
-function agregar() {
-    for (let i = 0; i < productos.length; i++) {
-        let producto = productos[i];
-        let respuesta = prompt("¿Quieres agregar " + producto.nombre + " por $" + producto.precio + " al carrito? (s/n)");
-        if (respuesta === "s") {
-            carrito.push(producto);
-        }
-    }
+function Producto(nombre, precio,stock){
+    this.nombre = nombre;
+    this.precio = parseFloat(precio);
+    this.stock = parseInt(stock);
 }
+
+//Instancio productos y los pusheo al array
+const producto1 = new Producto("Casaca deportiva 'Nike'",25000,50);
+productos.push(producto1);
+const producto2 = new Producto("Short deportivo 'Adidas'",15000,20);
+productos.push(producto2);
+const producto3 = new Producto("Botines 'Adidas'",100000,10)
+productos.push(producto3);
+
 
 // Mostrar contenido del carrito
 function mostrarCarrito() {
     if (carrito.length === 0) {
-        alert("Tu carrito está vacío.");
+        alert("Su carrito está vacío.");
     } else {
-        let mensaje = "Tu carrito contiene:\n";
+        let mensaje = "Su carrito contiene:\n";
         let total = 0;
         for (let i = 0; i < carrito.length; i++) {
             let producto = carrito[i];
@@ -49,14 +41,18 @@ let usuariosRegistrados = [{
 }];
 
 function tieneUsuario() {
-    let respuesta = prompt("Tiene un usuario y contraseña registrado? s/n")
+    let respuesta = "";
+    while (respuesta !== "s" && respuesta !== "n") {
+        respuesta = prompt("Tiene un usuario y contraseña registrado? s/n");
+    }
+
     if (respuesta === "s") {
         validarUsuario();
     } else if (respuesta === "n") {
         registroUsuario();
         validarUsuario();
-    } else{
-        alert("Ingrese una respuesta válida.")
+    } else {
+        alert("Ingrese una respuesta válida.");
         tieneUsuario();
     }
 }
@@ -78,6 +74,140 @@ function registroUsuario() {
     });
 }
 
+//Menu
+// function mostrarMenu() {
+//     let opcion = prompt("Elija una opción:\n1. Listar y agregar productos al carrito\n2. Buscar productos por marca\n3. Ver carrito de compras\n4. Eliminar productos del carrito\nx. Salir");
+//     while (opcion !== "x") {
+//         switch (opcion) {
+//             case "1":
+//                 agregarProductos();
+//                 break;
+//             case "2":
+//                 buscarProducto();
+//                 mostrarMenu();
+//                 break;
+//             case "3":
+//                 mostrarCarrito();
+//                 mostrarMenu();
+//                 break;
+//             case "4":
+//                 eliminarProductoDeCarrito();
+//                 mostrarMenu();
+//                 break;
+//             default:
+//                 alert("La opción elegida no es válida")
+//                 return;
+//         }
+//     } 
+    
+// }
+
+function mostrarMenu() {
+    let opcion = mostrarOpciones();
+    while (opcion !== "x") {
+        switch (opcion) {
+            case "1":
+                agregarProductos();
+                break;
+            case "2":
+                buscarProducto();
+                break;
+            case "3":
+                mostrarCarrito();
+                break;
+            case "4":
+                eliminarProductoDeCarrito();
+                break;
+            default:
+                alert("La opción elegida no es válida");
+                break;
+        }
+        opcion = mostrarOpciones();
+    }
+}
+
+function mostrarOpciones() {
+    return prompt("Elija una opción:\n1. Listar y agregar productos al carrito\n2. Buscar productos por marca\n3. Ver carrito de compras\n4. Eliminar productos del carrito\nx. Salir");
+}
+
+function agregarProductos() {
+    let productosDisponibles = "";
+    for (let i = 0; i < productos.length; i++) {
+        productosDisponibles += (i + 1) + ". " + productos[i].nombre + "- $" + productos[i].precio + "\n";
+    }
+
+    let indiceSeleccionado = "";
+    while (indiceSeleccionado !== "x") {
+        indiceSeleccionado = prompt("Seleccione un producto por su número de índice o escriba 'x' para volver al menú principal:\n\n" + productosDisponibles);
+
+        if (indiceSeleccionado < 1 || indiceSeleccionado > productos.length) {
+            if (indiceSeleccionado !== "x") {
+                alert("El índice seleccionado no es válido. Intenta de nuevo.");
+            }
+        } else {
+            if (indiceSeleccionado !== "x") {
+                let productoSeleccionado = productos[indiceSeleccionado - 1];
+                carrito.push(productoSeleccionado);
+                alert("Se ha agregado el producto " + productoSeleccionado.nombre + " al carrito.");
+            }
+        }
+    }
+
+    if (indiceSeleccionado === "x") {
+        mostrarMenu();
+    }
+}
+
+//Buscar productos por marca
+function buscarProducto() {
+    let textoBusqueda = prompt("Ingrese el marca a buscar en los productos:");
+    let resultadosBusqueda = [];
+
+    for (let i = 0; i < productos.length; i++) {
+        let producto = productos[i];
+        if (producto.nombre.toLowerCase().includes(textoBusqueda.toLowerCase())) {
+            resultadosBusqueda.push(producto);
+        }
+    }
+
+    if (resultadosBusqueda.length === 0) {
+        alert("No se encontraron productos que coincidan con tu búsqueda.");
+    } else {
+        let resultadosLista = "";
+        for (let i = 0; i < resultadosBusqueda.length; i++) {
+            let producto = resultadosBusqueda[i];
+            resultadosLista += "Nombre: " + producto.nombre + ", Precio: $" + producto.precio + "\n";
+        }
+        alert("Resultados de búsqueda:\n\n" + resultadosLista);
+    }
+}
+
+//Eliminar producto de carrito
+function eliminarProductoDeCarrito() {
+    if (carrito.length === 0) {
+        alert("El carrito está vacío. No hay productos para eliminar.");
+        return;
+    }
+
+    let productosEnCarrito = "";
+    for (let i = 0; i < carrito.length; i++) {
+        productosEnCarrito += (i + 1) + ". " + carrito[i].nombre + "\n";
+    }
+
+    let indiceSeleccionado = "";
+    while (indiceSeleccionado < 1 || indiceSeleccionado > carrito.length) {
+        indiceSeleccionado = prompt("Selecciona un producto por su número de índice para eliminarlo del carrito:\n\n" + productosEnCarrito);
+
+        if (indiceSeleccionado < 1 || indiceSeleccionado > carrito.length) {
+            alert("El índice seleccionado no es válido. Intenta de nuevo.");
+        }
+    }
+
+    let productoEliminado = carrito[indiceSeleccionado - 1];
+    carrito.splice(indiceSeleccionado - 1, 1);
+    alert("Se ha eliminado el producto " + productoEliminado.nombre + " del carrito.");
+}
+
 //Validar
 function validarUsuario() {
     let usuario = prompt("Ingrese su nombre de usuario:");
@@ -86,8 +216,7 @@ function validarUsuario() {
     for (let i = 0; i < usuariosRegistrados.length; i++) {
         if (usuariosRegistrados[i].usuario === usuario && usuariosRegistrados[i].password === password) {
             alert("Usuario y contraseña correctos.");
-            agregar();
-            mostrarCarrito();
+            mostrarMenu();
             return;
         }
     }
@@ -100,8 +229,4 @@ function validarUsuario() {
 window.onload = function() {
     tieneUsuario();
 }
-
-
-
-
 
