@@ -94,7 +94,7 @@ function mostrarMenu() {
                 break;
             case "x":
                 alert("Saliendo del programa.");
-                break;
+                return;
             default:
                 alert("La opción elegida no es válida");
                 break;
